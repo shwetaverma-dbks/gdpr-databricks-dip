@@ -5,6 +5,16 @@
 # MAGIC >For demo purposes only, there are no real data transformations applied below.
 # MAGIC
 # MAGIC >Please note that Shared Compute should be used to run this notebook due to RLS/CLM limitation
+# MAGIC
+# MAGIC **Purpose:** Implements Column-Level Masking (CLM) for sensitive data in production.
+# MAGIC
+# MAGIC **Key Operations:**
+# MAGIC - Creates column masking policies in Databricks Unity Catalog.
+# MAGIC - Applies masking functions so only privileged users can view raw PII values.
+# MAGIC - Retrieves the latest PII detection results to determine which columns require masking.
+# MAGIC - Tags the identified columns in Unity Catalog.
+# MAGIC - Enforces masking rules on production tables.
+# MAGIC
 
 # COMMAND ----------
 

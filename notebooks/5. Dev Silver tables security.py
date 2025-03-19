@@ -2,6 +2,14 @@
 # MAGIC %md
 # MAGIC ## In this step we'll persist anonimization in Dev environment so there is less risk of sensitive data exposure in a less governed environment
 # MAGIC
+# MAGIC **Purpose :** Ensures that Dev Environment does not expose sensitive data.
+# MAGIC
+# MAGIC **Key Operations:**
+# MAGIC - Encrypts PII in the Dev Catalog using Format-Preserving Encryption (FPE).
+# MAGIC - Uses Databricks Secrets for encryption key management.
+# MAGIC - Anonymizes and encrypts PII columns before saving to the Dev Silver tables.
+# MAGIC - Ensures that test/development environments do not contain unprotected PII.
+# MAGIC
 
 # COMMAND ----------
 

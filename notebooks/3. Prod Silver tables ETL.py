@@ -3,6 +3,14 @@
 # MAGIC # Publishing cleaned and transformed Bronze tables into Production Catalog 
 # MAGIC
 # MAGIC >For demo purposes only, there are no real data transformations applied below.
+# MAGIC
+# MAGIC **Purpose:** Moves transformed data from bronze (raw) to silver (processed) tables in the Production Catalog.
+# MAGIC
+# MAGIC **Key Operations:**
+# MAGIC - Runs the Anonymization Function (Anonymization_func.py) on selected free-text columns.
+# MAGIC - Reads tables with bronze in the name and creates corresponding silver tables.
+# MAGIC - If a table has a free-text PII column, applies anonymization before saving.
+# MAGIC - Writes the cleaned tables to the Production Catalog.
 
 # COMMAND ----------
 

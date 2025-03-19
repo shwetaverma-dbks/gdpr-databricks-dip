@@ -1,14 +1,31 @@
 # Databricks notebook source
+# 1. Use DiscoverX to sample records from a set of tables from Unity Catalog and unpivot all string columns into a long format dataset
+# 2. Run PII detection with Presidio
+# 3. Compute summarised statistics per table and column and save them in scanning results table
+# 4. Create tags in UC for Columns with high probablity of containing sensitive data
+
+# COMMAND ----------
+
 # MAGIC %md
 # MAGIC # PII detection with DiscoverX & Presidio
 # MAGIC
 # MAGIC This notebooks uses [DiscoverX](https://github.com/databrickslabs/discoverx) to run PII detection with [Presidio](https://microsoft.github.io/presidio/) over a set of tables in Unity Catalog.
 # MAGIC
 # MAGIC The notebook will:
-# MAGIC 1. Use DiscoverX to sample records from a set of tables from Unity Catalog and unpivot all string columns into a long format dataset
-# MAGIC 2. Run PII detection with Presidio
-# MAGIC 3. Compute summarised statistics per table and column and save them in scanning results table
-# MAGIC 4. Create tags in UC for Columns with high probablity of containing sensitive data
+# MAGIC
+# MAGIC - Uses Databricks DiscoverX and Microsoft Presidio to scan table columns for PII such as names, credit card numbers, emails, and phone numbers.
+# MAGIC - Unpivots the dataset to create a row-wise structure for PII analysis.
+# MAGIC - Assigns a confidence score to each detected PII entity.
+# MAGIC - Filters and ranks results based on the confidence score.
+# MAGIC - Sets column tags in Unity Catalog for identified PII.
+# MAGIC - Stores detection results in the pii_results table for auditing.
+
+# COMMAND ----------
+
+# %sql
+
+# create schema if not exists sv_catalog.pii_data_dev;
+# create schema if not exists sv_catalog.pii_data_prod;
 
 # COMMAND ----------
 
@@ -234,6 +251,7 @@ for row in dataCollect:
   table_name = row['full_table_name']
   column_name = row['column_name']
   identification_ts = row['identification_date'].replace(microsecond=0)
+  print(f"identification_ts is : {identification_ts}")
   print(f"Setting PII tag for {table_name} in column {column_name}")
   spark.sql(f"ALTER TABLE {table_name} ALTER COLUMN {column_name} SET TAGS ('pii' = '{identification_ts}')")
 
